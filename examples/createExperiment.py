@@ -46,6 +46,7 @@ def main():
     secondGraph.setColor("2E728E")                #Sets Color of line
 
     secondGraph.setChannel(1, 2)
+    secondGraph.addChannel(0, 1, 'FFFFFF')
 
     #Info
     myInfo = Experiment.InfoField()     #Creates an info-box.

@@ -3,6 +3,7 @@ from io import StringIO
 phyphoxBleNViews      = 5
 phyphoxBleNElements   = 5
 phyphoxBleNExportSets = 5
+phyphoxBleNChannel    = 5
 
 class Experiment:
     def __init__(self):
@@ -271,7 +272,31 @@ class Experiment:
       def setLabel(self, strInput):
         self._ERROR = self.err_check_length(strInput,41,'setLabel') if self._ERROR._MESSAGE is "" else self._ERROR
         self._LABEL = " label=\"" + strInput + "\""      
-      
+
+
+    class Channel:
+      def __init__(self):
+        self._CHANNELX      = ""
+        self._CHANNELY      = ""
+        self._COLOR         = ""
+        
+      @property
+      def CHANNELX(self):
+        return self._CHANNELX
+    
+      def CHANNELY(self):
+        return self._CHANNELY
+    
+      def COLOR(self):
+        return self._COLOR
+    
+      def getBytes(self, buffer):
+        buffer.write('\t\t\t<input axis=\"x\">')
+        buffer.write(self._CHANNELX)
+        buffer.write('</input>\n\t\t\t<input axis=\"y\">')
+        buffer.write(self._CHANNELY)
+
+
     class Graph(Element):
       def __init__(self):
         super().__init__()
@@ -286,6 +311,7 @@ class Experiment:
         self._INPUTY        = "CH1"
         self._STYLE         = ""
         self._XMLATTRIBUTE  = ""
+        self._CHANNEL       = [0]*phyphoxBleNChannel
        
       @property
       def UNITX(self):
@@ -320,9 +346,10 @@ class Experiment:
         
       def XMLATTRIBUTE(self):
         return self._XMLATTRIBUTE
-        
-        
-        
+    
+      def CHANNEL(self):
+        return self._CHANNEL
+      
       def setUnitX(self, strInput):
         self._ERROR = self.err_check_length(strInput,5,'setUnitX') if self._ERROR._MESSAGE is "" else self._ERROR
         self._UNITX = " unitX=\"" + strInput + "\""
@@ -364,6 +391,15 @@ class Experiment:
       def setXMLAttribute(self, strInput):
         self._ERROR = self.err_check_length(strInput,98,'setXMLAttribute') if self._ERROR._MESSAGE is "" else self._ERROR
         self._XMLATTRIBUTE = " " + strInput
+        
+      def addChannel(self, x, y, col)
+        self._ERROR = self.err_check_upper(x,5,'addChannel') if self._ERROR._MESSAGE is "" else self._ERROR
+        self._ERROR = self.err_check_upper(y,5,'addChannel') if self._ERROR._MESSAGE is "" else self._ERROR
+        channel = Channel()
+        channel._CHANNELX = "CH" + str(x)
+        channel._CHANNELY = "CH" + str(y)
+        channel._COLOR = str(color)
+        self._CHANNEL.append(channel)
       
       def getBytes(self, buffer):
         buffer.write('\t\t<graph')
@@ -383,6 +419,10 @@ class Experiment:
         buffer.write(self._INPUTX)
         buffer.write('</input>\n\t\t\t<input axis=\"y\">')
         buffer.write(self._INPUTY)
+        
+        for channel in self._CHANNEL:
+          channel.getBytes(buffer)
+        
         buffer.write('</input>\n\t\t</graph>\n')
 
     class Edit(Element):
