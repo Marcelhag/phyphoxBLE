@@ -46,7 +46,7 @@ def main():
     secondGraph.setColor("2E728E")                #Sets Color of line
 
     secondGraph.setChannel(1, 2)
-    secondGraph.addChannel(0, 1, 'FFFFFF')
+    secondGraph.addChannel(0, 2, 'FFFFFF')        #Show additional graph in coordinate-system
 
     #Info
     myInfo = Experiment.InfoField()     #Creates an info-box.
@@ -121,5 +121,3 @@ def receivedData():          # get data from PhyPhox app
     
 if __name__ == "__main__":
     main()
-
-
