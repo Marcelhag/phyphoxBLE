@@ -3,7 +3,6 @@ from io import StringIO
 phyphoxBleNViews      = 5
 phyphoxBleNElements   = 5
 phyphoxBleNExportSets = 5
-phyphoxBleNChannel    = 5
 
 class Experiment:
     def __init__(self):
